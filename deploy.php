@@ -6,9 +6,9 @@
 // Run the script once to generate its internal file listing, run it subsequent times to upload modified files
 // Script only supports uploading modified files, not folders
 
-const APP = '<MYAPPHERE>';
-const FOUR51USER = '<MYUSERHERE>';
-const FOUR51PASS = '<MY PASS HERE>';
+const APP = '<APP FOLDER>';
+const FOUR51USER = '<USER NAME>';
+const FOUR51PASS = '<PASSWORD>';
 
 function walkFolders($dir, &$results = []) {
 	$files = scandir($dir);
@@ -55,7 +55,7 @@ if (!$fileMtimes) {
 		// Deploy file(s)
 		foreach ($changedFiles as $item => $mtime) {
 			echo "\033[32mUploading: $item\033[0m\n";
-			exec('lftp -e "set ftp:ssl-protect-data true set ftp:ssl-force true set ssl:verify-certificate no; put ' . $item . ' -o ./' . APP . str_replace(getcwd(), '', $item) . '; quit" -u testSPA\|' . FOUR51USER . ',' . FOUR51PASS . ' ftp://appFTP.four51.com');
+			exec('lftp -e "set ftp:ssl-protect-data true set ftp:ssl-force true set ssl:verify-certificate no; put ' . $item . ' -o ./' . APP . '/app' . str_replace(getcwd(), '', $item) . '; quit" -u testSPA\|' . FOUR51USER . ',' . FOUR51PASS . ' ftp://appFTP.four51.com');
 		}
 		file_put_contents('./filemtimes.json', json_encode($folderData));
 		if (count($changedFiles) == 1) {
